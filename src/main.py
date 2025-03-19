@@ -118,12 +118,6 @@ def main(page: Page):
                 error.value = ''
                 page.update()
 
-    # ansible x -u y --private-key /path/to/private_key -m ansible.builtin.shell -a "curl -sL https://deb.nodesource.com/setup_14.x | sudo bash - && sudo apt install -y nodejs"
-    # ansible x -u y --private-key /path/to/private_key -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y mongodb"
-    # ansible x -u y --private-key /path/to/private_key -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y docker.io"
-    # ansible x -u y --private-key /path/to/private_key -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y postgresql"
-
-
     respone = Text()
     dd = DropdownM2(
         width=350,
