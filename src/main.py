@@ -56,7 +56,7 @@ def main(page: Page):
             else:
                 t += 1        
         
-    error = Text('',color=red_1)
+    error = Text('',color=red_1,weight=FontWeight.W_700,size=15)
 
     def ans_ins(e):
         Docker_value = main_screen.content.controls[2].controls[0].value

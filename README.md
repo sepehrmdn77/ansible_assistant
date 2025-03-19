@@ -14,7 +14,7 @@
 - 🌙 **Dark Mode UI**: Aesthetic design with themed colors.
 
 ## 📸 Screenshot
-_(Add a screenshot or demo GIF here)_
+![App view](src/assets/AA.png)![App error](src/assets/App_error.png)![Host error](src/assets/host_error.png)
 
 ## 🚀 Installation
 Clone this repository and navigate to the project directory:
