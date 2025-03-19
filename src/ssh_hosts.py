@@ -34,11 +34,15 @@ def match_host(list):
         if items == 'HostName':
             if current_host:
                 result.append(current_host)
-            current_host = {'HostName': list[index + 1]}
+            current_host = {'hostname': list[index + 1]}
         elif items == 'User':
             current_host['remote_user'] = list[index + 1]
         elif items == 'IdentityFile':
             current_host['private_key_file'] = list[index + 1]
+        # elif items == 'Host':
+        #     current_host['Host'] = list[index + 1]
+        elif items == 'Port':
+            current_host['Port'] = list[index + 1]
     
     if current_host:
         result.append(current_host)

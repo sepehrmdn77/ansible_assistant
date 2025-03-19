@@ -28,7 +28,7 @@ def main(page: Page):
         i = 0
         result=[]
         for item in list:
-            result.append(dropdownm2.Option(data=hdl[i],text=hdl[i]['HostName'],on_click=button_clicked,alignment=alignment.center))
+            result.append(dropdownm2.Option(data=hdl[i],text=hdl[i]['hostname'],on_click=button_clicked,alignment=alignment.center))
             i += 1
         return result
     
@@ -37,6 +37,7 @@ def main(page: Page):
     hostname=Text(value='')
     username=Text(value='')
     keypath=Text(value='')
+    portno=Text(value='')
 
     def button_clicked(e):
         page.update()
@@ -45,13 +46,16 @@ def main(page: Page):
         print(dd.value)
         t = 0
         for item in hdl:
-            if dd.value == hdl[t]['HostName']:
+            if dd.value == hdl[t]['hostname']:
                 hostname.value = ''
-                hostname.value = hdl[t]['HostName']
+                hostname.value = hdl[t]['hostname']
                 username.value = ''
                 username.value = hdl[t]['remote_user']
                 keypath.value = ''
                 keypath.value = hdl[t]['private_key_file']
+                portno.value = ''
+                portno.value = hdl[t]['Port']
+
                 page.update()
             else:
                 t += 1        
@@ -64,11 +68,13 @@ def main(page: Page):
         Node_value = main_screen.content.controls[2].controls[2].value
         Mongodb_value = main_screen.content.controls[2].controls[3].value
 
+        # -e ansible_ssh_port=2222 # for pointing to port number
+
         if Docker_value :
             Installing_status.value='installing Docker...'
             page.update()
             sleep(2)
-            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -m ansible.builtin.shell -a "curl -sL https://deb.nodesource.com/setup_14.x | sudo bash - && sudo apt install -y nodejs"',shell=True,text=True)
+            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -e ansible_ssh_port={portno.value} -m ansible.builtin.shell -a "curl -sL https://deb.nodesource.com/setup_14.x | sudo bash - && sudo apt install -y nodejs"',shell=True,text=True)
             Installing_status.value='Docker has been installed successfuly.'
             page.update()
             sleep(5)
@@ -79,7 +85,7 @@ def main(page: Page):
             Installing_status.value='installing PostgreSQL...'
             page.update()
             sleep(2)
-            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y mongodb"',shell=True,text=True)
+            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -e ansible_ssh_port={portno.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y mongodb"',shell=True,text=True)
             Installing_status.value='PostgreSQL has been installed successfuly.'
             page.update()
             sleep(5)
@@ -89,7 +95,7 @@ def main(page: Page):
             Installing_status.value='installing Node...'
             page.update()
             sleep(2)
-            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y docker.io"',shell=True,text=True)
+            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -e ansible_ssh_port={portno.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y docker.io"',shell=True,text=True)
             Installing_status.value='Node has been installed successfuly.'
             page.update()
             sleep(5)
@@ -99,7 +105,7 @@ def main(page: Page):
             Installing_status.value='installing Mongodb...'
             page.update()
             sleep(2)
-            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y postgresql"',shell=True,text=True)
+            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -e ansible_ssh_port={portno.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y postgresql"',shell=True,text=True)
             Installing_status.value='Mongodb has been installed successfuly.'
             page.update()
             sleep(5)
