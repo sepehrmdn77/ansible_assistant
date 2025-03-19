@@ -28,7 +28,7 @@ def main(page: Page):
         i = 0
         result=[]
         for item in list:
-            result.append(dropdownm2.Option(data=hdl[i],text=hdl[i]['hostname'],on_click=button_clicked,alignment=alignment.center))
+            result.append(dropdownm2.Option(data=hdl[i],text=hdl[i]['Host'],on_click=button_clicked,alignment=alignment.center))
             i += 1
         return result
     
