@@ -19,7 +19,7 @@ def main(page: Page):
     page.bgcolor='#232323'
     page.title='Ansible Assistant'
     page.window.width=480
-    page.window.height=600
+    page.window.height=750
     page.theme = Theme(
         color_scheme_seed=Colors.BLUE,
     )
@@ -45,22 +45,37 @@ def main(page: Page):
         page.update()
         print(dd.value)
         t = 0
-        for item in hdl:
-            if dd.value == hdl[t]['hostname']:
-                hostname.value = ''
-                hostname.value = hdl[t]['hostname']
-                username.value = ''
-                username.value = hdl[t]['remote_user']
-                keypath.value = ''
-                keypath.value = hdl[t]['private_key_file']
-                portno.value = ''
-                portno.value = hdl[t]['Port']
-
+        for host_info in hdl:
+            if dd.value == host_info['Host']:
+                hostname.value = host_info['Host']
+                username.value = host_info['remote_user']
+                keypath.value = host_info['private_key_file']
+                portno.value = host_info['Port']
                 page.update()
+                break
             else:
                 t += 1        
         
-    error = Text('',color=red_1,weight=FontWeight.W_700,size=15)
+    error = TextField('',color=red_1,text_size=12,border_color='transparent',max_lines=100,read_only=True)
+    monitor = Column(controls=[error],scroll='auto')
+    monitor_container = Column(controls=[Container(
+            content=Container(
+                    content=monitor,
+                    margin=5,
+                    padding=5,
+                    alignment=alignment.center,
+                    bgcolor='#232323',
+                    height=250,
+                    width=450,
+                    border_radius=15
+                    )
+                ,width=500,
+                height=250,
+                bgcolor='grey',
+                border_radius=15
+                )
+            ]
+        )
 
     def ans_ins(e):
         Docker_value = main_screen.content.controls[2].controls[0].value
@@ -68,59 +83,134 @@ def main(page: Page):
         Node_value = main_screen.content.controls[2].controls[2].value
         Mongodb_value = main_screen.content.controls[2].controls[3].value
 
-        # -e ansible_ssh_port=2222 # for pointing to port number
-
         if Docker_value :
             Installing_status.value='installing Docker...'
-            page.update()
-            sleep(2)
-            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -e ansible_ssh_port={portno.value} -m ansible.builtin.shell -a "curl -sL https://deb.nodesource.com/setup_14.x | sudo bash - && sudo apt install -y nodejs"',shell=True,text=True)
-            Installing_status.value='Docker has been installed successfuly.'
-            page.update()
-            sleep(5)
-            Installing_status.value=''
-            page.update()
-
-        if PostgreSQL_value :
-            Installing_status.value='installing PostgreSQL...'
-            page.update()
-            sleep(2)
-            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -e ansible_ssh_port={portno.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y mongodb"',shell=True,text=True)
-            Installing_status.value='PostgreSQL has been installed successfuly.'
-            page.update()
-            sleep(5)
-            Installing_status.value=''
-
-        if Node_value :
-            Installing_status.value='installing Node...'
-            page.update()
-            sleep(2)
-            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -e ansible_ssh_port={portno.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y docker.io"',shell=True,text=True)
-            Installing_status.value='Node has been installed successfuly.'
-            page.update()
-            sleep(5)
-            Installing_status.value=''
-
-        if Mongodb_value :
-            Installing_status.value='installing Mongodb...'
-            page.update()
-            sleep(2)
-            subprocess.run(f'ansible {hostname.value} -u {username.value} --private-key {keypath.value} -e ansible_ssh_port={portno.value} -m ansible.builtin.shell -a "sudo apt update && sudo apt install -y postgresql"',shell=True,text=True)
-            Installing_status.value='Mongodb has been installed successfuly.'
-            page.update()
-            sleep(5)
-            Installing_status.value=''
-        else:
-            if not dd.value :
-                error.value = 'Select a host to start'
+            try:
+                page.update()
+                result = result = subprocess.run(
+                                        f'ansible-playbook ./assets/ansible/docker.yml '
+                                        f'--user={username.value} '
+                                        f'-c ssh '
+                                        f'-i "{hostname.value}," '
+                                        f'--private-key={keypath.value} '
+                                        f'-e "ansible_port={portno.value}"',
+                                        shell=True,
+                                        text=True,
+                                        check=True,
+                                        capture_output=True
+                                    )
+                error.value = f'The Docker has been installed successfully: {result.stdout}'
+                Installing_status.value= 'The Docker has been installed successfully'
                 page.update()
                 sleep(5)
                 error.value = ''
+                Installing_status.value= ''
                 page.update()
-            else :
-                error.value = 'Select atleast one application to intstall'
+            except subprocess.CalledProcessError as e:
+                error.value = f'Error Installing Docker: {e.stderr}'
+                Installing_status.value= 'Error Installing Docker...'
                 page.update()
                 sleep(5)
+                Installing_status.value= ''
+                error.value = ''
+                page.update()
+
+        if PostgreSQL_value :
+            Installing_status.value='installing PostgreSQL...'
+            try:
+                page.update()
+                result = result = subprocess.run(
+                                        f'ansible-playbook ./assets/ansible/postgre.yml '
+                                        f'--user={username.value} '
+                                        f'-c ssh '
+                                        f'-i "{hostname.value}," '
+                                        f'--private-key={keypath.value} '
+                                        f'-e "ansible_port={portno.value}"',
+                                        shell=True,
+                                        text=True,
+                                        check=True,
+                                        capture_output=True
+
+                                    )
+                error.value = f'The PosgreSQL has been installed successfully: {result.stdout}'
+                Installing_status.value= 'The PosgreSQL has been installed successfully'
+                page.update()
+                sleep(5)
+                error.value = ''
+                Installing_status.value= ''
+                page.update()
+            except subprocess.CalledProcessError as e:
+                error.value = f'Error Installing PostgreSQL: {e.stderr}'
+                Installing_status.value= 'Error Installing PosgreSQL...'
+                page.update()
+                sleep(5)
+                Installing_status.value= ''
+                error.value = ''
+                page.update()
+
+        if Node_value :
+            Installing_status.value='installing Node...'
+            try:
+                page.update()
+                result = result = subprocess.run(
+                                        f'ansible-playbook ./assets/ansible/node.yml '
+                                        f'--user={username.value} '
+                                        f'-c ssh '
+                                        f'-i "{hostname.value}," '
+                                        f'--private-key={keypath.value} '
+                                        f'-e "ansible_port={portno.value}"',
+                                        shell=True,
+                                        text=True,
+                                        check=True,
+                                        capture_output=True
+
+                                    )
+                error.value = f'The Node has been installed successfully: {result.stdout}'
+                Installing_status.value= 'The Node has been installed successfully'
+                page.update()
+                sleep(5)
+                error.value = ''
+                Installing_status.value= ''
+                page.update()
+            except subprocess.CalledProcessError as e:
+                error.value = f'Error Installing Node: {e.stderr}'
+                Installing_status.value= 'Error Installing Node...'
+                page.update()
+                sleep(5)
+                Installing_status.value= ''
+                error.value = ''
+                page.update()
+
+        if Mongodb_value :
+            Installing_status.value='installing MongoDB...'
+            try:
+                page.update()
+                result = result = subprocess.run(
+                                        f'ansible-playbook ./assets/ansible/mongo.yml '
+                                        f'--user={username.value} '
+                                        f'-c ssh '
+                                        f'-i "{hostname.value}," '
+                                        f'--private-key={keypath.value} '
+                                        f'-e "ansible_port={portno.value}"',
+                                        shell=True,
+                                        text=True,
+                                        check=True,
+                                        capture_output=True
+
+                                    )
+                error.value = f'The MongoDB has been installed successfully: {result.stdout}'
+                Installing_status.value= 'The MongoDB has been installed successfully'
+                page.update()
+                sleep(5)
+                error.value = ''
+                Installing_status.value= ''
+                page.update()
+            except subprocess.CalledProcessError as e:
+                error.value = f'Error Installing MongoDB: {e.stderr}'
+                Installing_status.value= 'Error Installing MongoDB...'
+                page.update()
+                sleep(5)
+                Installing_status.value= ''
                 error.value = ''
                 page.update()
 
@@ -227,7 +317,7 @@ def main(page: Page):
                     alignment=MainAxisAlignment.CENTER
                 ),
                 install_button,
-                error,
+                monitor_container,
                 Container(height=40),
                 Installing_status
             ],horizontal_alignment=CrossAxisAlignment.CENTER
