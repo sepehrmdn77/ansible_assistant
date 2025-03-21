@@ -24,7 +24,11 @@
           - curl
         state: present
         update_cache: yes
-
+    - name: Create unified key directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
     - name: Import MongoDB GPG key
       ansible.builtin.apt_key:
         url: https://www.mongodb.org/static/pgp/server-7.0.asc

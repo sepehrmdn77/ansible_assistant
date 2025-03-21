@@ -10,6 +10,12 @@
     postgresql_listen_addresses: "localhost"  # Or '*' for remote access
 
   tasks:
+    - name: Create unified key directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
     - name: Add PostgreSQL repository
       apt_repository:
         repo: "deb https://apt.postgresql.org/pub/repos/apt {{ ansible_distribution_release }}-pgdg main"

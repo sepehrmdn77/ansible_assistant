@@ -19,6 +19,11 @@
           - gnupg
         state: present
         update_cache: yes
+    - name: Create unified key directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
 
     - name: Add NodeSource GPG key
       ansible.builtin.apt_key:
