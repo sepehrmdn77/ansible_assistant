@@ -2,6 +2,10 @@ from flet import *
 import subprocess
 from time import sleep
 from ssh_hosts import hosts_dicts_list as hdl
+import multiprocessing
+import asyncio
+
+multiprocessing.set_start_method("spawn") 
 
 black = "#332323"
 bg_white = "#EEE2DE"
@@ -56,7 +60,7 @@ def main(page: Page):
             else:
                 t += 1        
         
-    error = TextField('',color=red_1,text_size=12,border_color='transparent',max_lines=100,read_only=True)
+    error = TextField('',color=bg_white,text_size=12,border_color='transparent',max_lines=100,read_only=True)
     monitor = Column(controls=[error],scroll='auto')
     monitor_container = Column(controls=[Container(
             content=Container(
@@ -77,142 +81,191 @@ def main(page: Page):
             ]
         )
 
-    def ans_ins(e):
+
+    async def ans_ins(e):
+    # ... existing checkbox logic ...
         Docker_value = main_screen.content.controls[2].controls[0].value
         PostgreSQL_value = main_screen.content.controls[2].controls[1].value
         Node_value = main_screen.content.controls[2].controls[2].value
         Mongodb_value = main_screen.content.controls[2].controls[3].value
-
-        if Docker_value :
-            Installing_status.value='installing Docker...'
+        if Docker_value:
+            Installing_status.value = 'installing Docker...'
+            page.update()
+            
+            cmd = (
+                f'ansible-playbook ./assets/ansible/docker.yml '
+                f'--user={username.value} '
+                f'-c ssh '
+                f'-i "{hostname.value}," '
+                f'--private-key={keypath.value} '
+                f'-e "ansible_port={portno.value}" '
+                f'-e "ansible_python_interpreter=/usr/bin/python3"'
+            )
+            
             try:
-                page.update()
-                result = result = subprocess.run(
-                                        f'ansible-playbook ./assets/ansible/docker.yml '
-                                        f'--user={username.value} '
-                                        f'-c ssh '
-                                        f'-i "{hostname.value}," '
-                                        f'--private-key={keypath.value} '
-                                        f'-e "ansible_port={portno.value}"',
-                                        shell=True,
-                                        text=True,
-                                        check=True,
-                                        capture_output=True
-                                    )
-                error.value = f'The Docker has been installed successfully: {result.stdout}'
-                Installing_status.value= 'The Docker has been installed successfully'
-                page.update()
-                sleep(5)
+                process = await asyncio.create_subprocess_shell(
+                    cmd,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                
+                # Real-time output
+                while True:
+                    output = await process.stdout.readline()
+                    if not output:
+                        break
+                    error.value += output.decode()
+                    page.update()
+                
+                # Get final status
+                stdout, stderr = await process.communicate()
+                if process.returncode == 0:
+                    error.value = f'Success: {stdout.decode()}'
+                else:
+                    error.value = f'Error: {stderr.decode()}'
+                    
+            except Exception as e:
+                error.value = f'Exception: {str(e)}'
+            
+            finally:
+                await asyncio.sleep(5)
                 error.value = ''
-                Installing_status.value= ''
+                Installing_status.value = ''
                 page.update()
-            except subprocess.CalledProcessError as e:
-                error.value = f'Error Installing Docker: {e.stderr}'
-                Installing_status.value= 'Error Installing Docker...'
-                page.update()
-                sleep(5)
-                Installing_status.value= ''
-                error.value = ''
-                page.update()
-
-        if PostgreSQL_value :
-            Installing_status.value='installing PostgreSQL...'
+        if PostgreSQL_value:
+            Installing_status.value = 'installing PostgreSQL...'
+            page.update()
+            
+            cmd = (
+                f'ansible-playbook ./assets/ansible/postgre.yml '
+                f'--user={username.value} '
+                f'-c ssh '
+                f'-i "{hostname.value}," '
+                f'--private-key={keypath.value} '
+                f'-e "ansible_port={portno.value}" '
+                f'-e "ansible_python_interpreter=/usr/bin/python3"'
+            )
+            
             try:
-                page.update()
-                result = result = subprocess.run(
-                                        f'ansible-playbook ./assets/ansible/postgre.yml '
-                                        f'--user={username.value} '
-                                        f'-c ssh '
-                                        f'-i "{hostname.value}," '
-                                        f'--private-key={keypath.value} '
-                                        f'-e "ansible_port={portno.value}"',
-                                        shell=True,
-                                        text=True,
-                                        check=True,
-                                        capture_output=True
-
-                                    )
-                error.value = f'The PosgreSQL has been installed successfully: {result.stdout}'
-                Installing_status.value= 'The PosgreSQL has been installed successfully'
-                page.update()
-                sleep(5)
+                process = await asyncio.create_subprocess_shell(
+                    cmd,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                
+                # Real-time output
+                while True:
+                    output = await process.stdout.readline()
+                    if not output:
+                        break
+                    error.value += output.decode()
+                    page.update()
+                
+                # Get final status
+                stdout, stderr = await process.communicate()
+                if process.returncode == 0:
+                    error.value = f'Success: {stdout.decode()}'
+                else:
+                    error.value = f'Error: {stderr.decode()}'
+                    
+            except Exception as e:
+                error.value = f'Exception: {str(e)}'
+            
+            finally:
+                await asyncio.sleep(5)
                 error.value = ''
-                Installing_status.value= ''
+                Installing_status.value = ''
                 page.update()
-            except subprocess.CalledProcessError as e:
-                error.value = f'Error Installing PostgreSQL: {e.stderr}'
-                Installing_status.value= 'Error Installing PosgreSQL...'
-                page.update()
-                sleep(5)
-                Installing_status.value= ''
-                error.value = ''
-                page.update()
-
-        if Node_value :
-            Installing_status.value='installing Node...'
+        if Node_value:
+            Installing_status.value = 'installing Node...'
+            page.update()
+            
+            cmd = (
+                f'ansible-playbook ./assets/ansible/node.yml '
+                f'--user={username.value} '
+                f'-c ssh '
+                f'-i "{hostname.value}," '
+                f'--private-key={keypath.value} '
+                f'-e "ansible_port={portno.value}" '
+                f'-e "ansible_python_interpreter=/usr/bin/python3"'
+            )
+            
             try:
-                page.update()
-                result = result = subprocess.run(
-                                        f'ansible-playbook ./assets/ansible/node.yml '
-                                        f'--user={username.value} '
-                                        f'-c ssh '
-                                        f'-i "{hostname.value}," '
-                                        f'--private-key={keypath.value} '
-                                        f'-e "ansible_port={portno.value}"',
-                                        shell=True,
-                                        text=True,
-                                        check=True,
-                                        capture_output=True
-
-                                    )
-                error.value = f'The Node has been installed successfully: {result.stdout}'
-                Installing_status.value= 'The Node has been installed successfully'
-                page.update()
-                sleep(5)
+                process = await asyncio.create_subprocess_shell(
+                    cmd,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                
+                # Real-time output
+                while True:
+                    output = await process.stdout.readline()
+                    if not output:
+                        break
+                    error.value += output.decode()
+                    page.update()
+                
+                # Get final status
+                stdout, stderr = await process.communicate()
+                if process.returncode == 0:
+                    error.value = f'Success: {stdout.decode()}'
+                else:
+                    error.value = f'Error: {stderr.decode()}'
+                    
+            except Exception as e:
+                error.value = f'Exception: {str(e)}'
+            
+            finally:
+                await asyncio.sleep(5)
                 error.value = ''
-                Installing_status.value= ''
+                Installing_status.value = ''
                 page.update()
-            except subprocess.CalledProcessError as e:
-                error.value = f'Error Installing Node: {e.stderr}'
-                Installing_status.value= 'Error Installing Node...'
-                page.update()
-                sleep(5)
-                Installing_status.value= ''
-                error.value = ''
-                page.update()
-
-        if Mongodb_value :
-            Installing_status.value='installing MongoDB...'
+        if Mongodb_value:
+            Installing_status.value = 'installing MongoDB...'
+            page.update()
+            
+            cmd = (
+                f'ansible-playbook ./assets/ansible/mongo.yml '
+                f'--user={username.value} '
+                f'-c ssh '
+                f'-i "{hostname.value}," '
+                f'--private-key={keypath.value} '
+                f'-e "ansible_port={portno.value}" '
+                f'-e "ansible_python_interpreter=/usr/bin/python3"'
+            )
+            
             try:
+                process = await asyncio.create_subprocess_shell(
+                    cmd,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE
+                )
+                
+                # Real-time output
+                while True:
+                    output = await process.stdout.readline()
+                    if not output:
+                        break
+                    error.value += output.decode()
+                    page.update()
+                
+                # Get final status
+                stdout, stderr = await process.communicate()
+                if process.returncode == 0:
+                    error.value = f'Success: {stdout.decode()}'
+                else:
+                    error.value = f'Error: {stderr.decode()}'
+                    
+            except Exception as e:
+                error.value = f'Exception: {str(e)}'
+            
+            finally:
+                await asyncio.sleep(5)
+                error.value = ''
+                Installing_status.value = ''
                 page.update()
-                result = result = subprocess.run(
-                                        f'ansible-playbook ./assets/ansible/mongo.yml '
-                                        f'--user={username.value} '
-                                        f'-c ssh '
-                                        f'-i "{hostname.value}," '
-                                        f'--private-key={keypath.value} '
-                                        f'-e "ansible_port={portno.value}"',
-                                        shell=True,
-                                        text=True,
-                                        check=True,
-                                        capture_output=True
 
-                                    )
-                error.value = f'The MongoDB has been installed successfully: {result.stdout}'
-                Installing_status.value= 'The MongoDB has been installed successfully'
-                page.update()
-                sleep(5)
-                error.value = ''
-                Installing_status.value= ''
-                page.update()
-            except subprocess.CalledProcessError as e:
-                error.value = f'Error Installing MongoDB: {e.stderr}'
-                Installing_status.value= 'Error Installing MongoDB...'
-                page.update()
-                sleep(5)
-                Installing_status.value= ''
-                error.value = ''
-                page.update()
+
 
     respone = Text()
     dd = DropdownM2(
