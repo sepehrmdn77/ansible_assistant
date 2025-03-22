@@ -1,3 +1,23 @@
-#SPDX-License-Identifier: MIT-0
 ---
-# tasks file for Install_node
+- name: Install required packages
+  ansible.builtin.apt:
+    name:
+      - unzip
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Install fnm
+  ansible.builtin.shell: |
+    curl -fsSL https://fnm.vercel.app/install | bash
+  args:
+    executable: /bin/bash
+
+- name: Install Node.js
+  ansible.builtin.shell: |
+    export PATH="/root/.local/share/fnm:$PATH"
+    eval "$(fnm env)"
+    fnm install 22
+    fnm use 22
+  args:
+    executable: /bin/bash
