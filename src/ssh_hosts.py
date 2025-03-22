@@ -41,8 +41,8 @@ def match_host(list):
             current_host['private_key_file'] = list[index + 1]
         elif items == 'HostName':
             current_host['hostname'] = list[index + 1]
-        elif items == 'Port':
-            current_host['Port'] = list[index + 1]
+        # elif items == 'Port': # uncomment here if port needed
+        #     current_host['Port'] = list[index + 1] # uncomment here if port needed
     
     if current_host:
         result.append(current_host)

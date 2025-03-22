@@ -1,0 +1,19 @@
+---
+- name: Nuclear cleanup
+  block:
+    - name: Remove all Docker artifacts
+      ansible.builtin.shell: |
+        sudo apt-get purge -y docker-* containerd.io
+        sudo rm -rf /etc/apt/keyrings/docker* \
+                    /usr/share/keyrings/docker* \
+                    /etc/apt/sources.list.d/docker* \
+                    /var/lib/apt/lists/*
+        sudo apt-get autoremove -y
+      args:
+        executable: /bin/bash
+      ignore_errors: yes
+
+    - name: Force APT reset
+      ansible.builtin.apt:
+        update_cache: yes
+        force_apt_get: yes

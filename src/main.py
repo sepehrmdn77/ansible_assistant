@@ -98,8 +98,8 @@ def main(page: Page):
                 f'-c ssh '
                 f'-i "{hostname.value}," '
                 f'--private-key={keypath.value} '
-                f'-e "ansible_port={portno.value}" '
-                f'-e "ansible_python_interpreter=/usr/bin/python3"'
+                # f'-e "ansible_port={portno.value}" ' # uncomment here if port needed
+                f'-e "ansible_python_interpreter=/usr/bin/python3" -v'
             )
             
             try:
@@ -142,8 +142,8 @@ def main(page: Page):
                 f'-c ssh '
                 f'-i "{hostname.value}," '
                 f'--private-key={keypath.value} '
-                f'-e "ansible_port={portno.value}" '
-                f'-e "ansible_python_interpreter=/usr/bin/python3"'
+                # f'-e "ansible_port={portno.value}" ' # uncomment here if port needed
+                f'-e "ansible_python_interpreter=/usr/bin/python3" -v'
             )
             
             try:
@@ -186,8 +186,8 @@ def main(page: Page):
                 f'-c ssh '
                 f'-i "{hostname.value}," '
                 f'--private-key={keypath.value} '
-                f'-e "ansible_port={portno.value}" '
-                f'-e "ansible_python_interpreter=/usr/bin/python3"'
+                # f'-e "ansible_port={portno.value}" ' # uncomment here if port needed
+                f'-e "ansible_python_interpreter=/usr/bin/python3" -v'
             )
             
             try:
@@ -230,8 +230,8 @@ def main(page: Page):
                 f'-c ssh '
                 f'-i "{hostname.value}," '
                 f'--private-key={keypath.value} '
-                f'-e "ansible_port={portno.value}" '
-                f'-e "ansible_python_interpreter=/usr/bin/python3"'
+                # f'-e "ansible_port={portno.value}" ' # uncomment here if port needed
+                f'-e "ansible_python_interpreter=/usr/bin/python3" -v'
             )
             
             try:

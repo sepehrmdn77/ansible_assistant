@@ -1,0 +1,4 @@
+---
+- name: 'Connection test'
+  ansible.builtin.ping:
+  tags: ping

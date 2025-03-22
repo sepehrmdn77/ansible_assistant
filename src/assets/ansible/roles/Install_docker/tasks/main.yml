@@ -1,0 +1,32 @@
+---
+- name: Configure Docker
+  block:
+    - name: Create key directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Add Docker GPG key (Atomic method)
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+        keyring: /etc/apt/keyrings/docker.gpg
+
+    - name: Add Docker repository (Ubuntu 22.04 compatibility)
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable"
+        filename: docker.list
+        state: present
+        update_cache: no
+- name: Install Docker (Atomic)
+  ansible.builtin.apt:
+    name:
+      - docker-ce=5:24.0.7-1~ubuntu.22.04~jammy
+      - docker-ce-cli=5:24.0.7-1~ubuntu.22.04~jammy
+      - containerd.io=1.6.31-1
+      - docker-buildx-plugin=0.12.1-1~ubuntu.22.04~jammy
+    state: present
+    force: yes
+    install_recommends: no
+    update_cache: yes
