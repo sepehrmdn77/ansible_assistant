@@ -1,0 +1,40 @@
+---
+- name: 'Install prerequisites'
+  ansible.builtin.apt:
+    name:
+      - gnupg
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Configure MongoDB Repository
+  block:
+    - name: Ensure key directory exists
+      ansible.builtin.file:
+        path: /usr/share/keyrings
+        state: directory
+        mode: '0755'
+      
+    - name: Import MongoDB GPG key
+      ansible.builtin.apt_key:
+        url: https://www.mongodb.org/static/pgp/server-8.0.asc
+        keyring: /usr/share/keyrings/mongodb-server-8.0.gpg
+        state: present
+
+    - name: Add MongoDB repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg] https://repo.mongodb.org/apt/ubuntu {{ (ansible_distribution_release == 'noble') | ternary('jammy', ansible_distribution_release) }}/mongodb-org/8.0 multiverse"
+        filename: mongodb-org-8.0.list
+        state: present
+        update_cache: no
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+    force_apt_get: yes
+
+- name: Install MongoDB
+  ansible.builtin.apt:
+    name: mongodb-org
+    state: present
+    cache_valid_time: 3600

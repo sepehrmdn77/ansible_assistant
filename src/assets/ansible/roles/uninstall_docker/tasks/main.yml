@@ -1,5 +1,5 @@
 ---
-- name: Nuclear cleanup
+- name: cleanup
   block:
     - name: Remove all Docker artifacts
       ansible.builtin.shell: |

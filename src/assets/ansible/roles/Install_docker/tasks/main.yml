@@ -19,7 +19,7 @@
         filename: docker.list
         state: present
         update_cache: no
-- name: Install Docker (Atomic)
+- name: Install Docker
   ansible.builtin.apt:
     name:
       - docker-ce=5:24.0.7-1~ubuntu.22.04~jammy
