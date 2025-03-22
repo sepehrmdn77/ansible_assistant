@@ -65,18 +65,18 @@ def main(page: Page):
     monitor_container = Column(controls=[Container(
             content=Container(
                     content=monitor,
-                    margin=5,
+                    margin=0,
                     padding=5,
                     alignment=alignment.center,
-                    bgcolor='#232323',
+                    gradient=RadialGradient(colors=[black,secondary_bg],radius=1.5),
                     height=250,
                     width=450,
                     border_radius=15
                     )
                 ,width=500,
                 height=250,
-                bgcolor='grey',
-                border_radius=15
+                bgcolor='#5f6176',
+                border_radius=10
                 )
             ]
         )
