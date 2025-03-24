@@ -46,9 +46,6 @@ python src/main.py  # Run the application
 - Modify `ssh_hosts.py` if needed to customize host management.
 - The application reads the host list dynamically.
 
-## 📜 License
-This project is licensed under the **MIT License**.
-
 ## 🤝 Contributing
 Contributions are welcome! Feel free to fork the repository and submit a pull request.
 
