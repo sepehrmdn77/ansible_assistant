@@ -271,7 +271,7 @@ def main(page: ft.Page):
                 else:
                     error.value = f'Error: {stderr.decode()}'
 
-            except Exception as e:
+            except Exception as e:  # noqa: F841
                 error.value = f'Exception: {str(e)}'
 
             finally:
