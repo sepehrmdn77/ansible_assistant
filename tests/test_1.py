@@ -1,10 +1,13 @@
 import pytest
 import flet as ft
 import sys
+from pathlib import Path
 
-sys.path.append('./src')
+# Add the 'src' directory to the Python path
+src_path = str(Path(__file__).resolve().parent.parent / 'src')
+sys.path.insert(0, src_path)
 
-from src import main
+import main  # Now imports main from the src directory
 
 def test_app_initialization():
     conn = None
