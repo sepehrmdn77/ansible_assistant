@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install flake8 pytest
+          pip install flake8 pytest pytest-asyncio pytest-flet
 
       - name: Create SSH Config File
         run: |
@@ -56,7 +56,7 @@ jobs:
         run: flake8 ./src
 
       - name: Run unit tests
-        run: pytest ./tests -v --durations=0
+        run: pytest ./tests -v --durations=0 --asyncio-mode=auto
 
       - name: Start Flet app
         run: python src/main.py

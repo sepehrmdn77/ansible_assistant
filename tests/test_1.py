@@ -1,31 +1,31 @@
 import pytest
 import flet as ft
 import sys
+import asyncio
 from pathlib import Path
 
-# Add the 'src' directory to the Python path
+# Add the 'src' directory to Python path
 src_path = str(Path(__file__).resolve().parent.parent / 'src')
 sys.path.insert(0, src_path)
 
-import main  # Now imports main from the src directory
+import main
 
-def test_app_initialization():
-    conn = None
-    session_id = "test_session"
-    loop = None
+# Enable async test execution
+@pytest.fixture(scope="session")
+def event_loop():
+    loop = asyncio.get_event_loop()
+    yield loop
+    loop.close()
 
-    page = ft.Page(conn=conn, session_id=session_id, loop=loop)
-    main.main(page)
-    assert len(page.controls) > 0
+# Test initialization
+async def test_app_initialization(page):
+    await main.main(page)  # Wait for app initialization
+    assert len(page.controls) > 0  # Verify controls are loaded
 
+# Parameterized button test
 @pytest.mark.parametrize("label_text", ["Start", "Stop", "Reset"])
-def test_button_labels(label_text):
-    conn = None
-    session_id = "test_session"
-    loop = None
-
-    page = ft.Page(conn=conn, session_id=session_id, loop=loop)
-    main.main(page)
+async def test_button_labels(page, label_text):
+    await main.main(page)
     assert any(
-        control for control in page.controls if control.label == label_text
-    ), f"No control found with label '{label_text}'"
+        control.label == label_text for control in page.controls
+    ), f"Missing button: {label_text}"
