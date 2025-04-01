@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install flake8 pytest pytest-asyncio pytest-flet
+          pip install flake8 pytest
 
       - name: Create SSH Config File
         run: |
