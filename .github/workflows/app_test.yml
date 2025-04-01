@@ -1,0 +1,35 @@
+name: CI for ansible assisntant
+
+run-name: ${{ github.actor }} is running workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-leatest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up python3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install flake8 pytest
+
+      - name: Lint code
+        run: flake8 ./src
+
+      - name: Run unit tests
+        run: pytest ./src
