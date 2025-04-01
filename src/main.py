@@ -1,6 +1,4 @@
 import flet as ft
-import subprocess
-from time import sleep
 from ssh_hosts import hosts_dicts_list as hdl
 import multiprocessing
 import asyncio
