@@ -29,7 +29,7 @@ def main(page: ft.Page):
         color_scheme_seed=ft.Colors.BLUE,
     )
 
-    def hosts_boxes(list):  # in this function for each item in hdl we will have a check box
+    def hosts_boxes(list):  # check box for each item in hdl
         i = 0
         result = []
         for item in list:
