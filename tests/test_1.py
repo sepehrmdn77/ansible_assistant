@@ -2,6 +2,13 @@ import pytest
 import flet as ft
 import sys
 sys.path.append('./src') 
+import os
+
+ssh_config_path = os.getenv('SSH_CONFIG_PATH', '~/.ssh/config')
+
+if not os.path.exists(ssh_config_path):
+    raise FileNotFoundError(f"No such file or directory: {ssh_config_path}")
+
 import main
 
 def test_app_initialization():
