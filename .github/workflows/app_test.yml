@@ -32,4 +32,4 @@ jobs:
         run: flake8 ./src
 
       - name: Run unit tests
-        run: pytest ./src
+        run: pytest ./tests
