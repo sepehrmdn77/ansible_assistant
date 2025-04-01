@@ -31,14 +31,13 @@ jobs:
       - name: Lint code
         run: flake8 ./src
 
-      - name: Create mock SSH config
-        run: |
-          mkdir -p src/mock_ssh
-          echo "Host *" > src/mock_ssh/config
-          echo "    StrictHostKeyChecking no" >> src/mock_ssh/config
-          
+      - name: Run unit tests
         env:
-          SSH_CONFIG_PATH: "src/mock_ssh/config"
+          SSH_CONFIG_PATH: "./src/mock_ssh/config"
+          
+        run: |
+          export PYTHONPATH=$PYTHONPATH:./src
+          pytest ./tests -v
 
       - name: Run unit tests
         run: |
