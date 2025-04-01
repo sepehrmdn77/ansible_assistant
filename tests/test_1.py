@@ -1,27 +1,25 @@
-import main
-from unittest.mock import Mock
 import pytest
 import flet as ft
 import sys
 
-sys.path.append('./src')  # working path
+sys.path.append('./src')
 
+from src import main
 
 def test_app_initialization():
-    conn = Mock()
+    conn = None
     session_id = "test_session"
-    loop = Mock()
+    loop = None
 
     page = ft.Page(conn=conn, session_id=session_id, loop=loop)
     main.main(page)
     assert len(page.controls) > 0
 
-
 @pytest.mark.parametrize("label_text", ["Start", "Stop", "Reset"])
 def test_button_labels(label_text):
-    conn = Mock()
+    conn = None
     session_id = "test_session"
-    loop = Mock()
+    loop = None
 
     page = ft.Page(conn=conn, session_id=session_id, loop=loop)
     main.main(page)
