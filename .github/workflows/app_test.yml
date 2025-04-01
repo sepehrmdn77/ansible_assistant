@@ -1,6 +1,4 @@
-name: CI for ansible assisntant
-
-run-name: ${{ github.actor }} is running workflow
+name: CI for ansible assistant
 
 on:
   push:
