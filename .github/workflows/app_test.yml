@@ -13,6 +13,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Checkout
@@ -53,7 +54,7 @@ jobs:
         run: flake8 ./src
 
       - name: Run unit tests
-        run: pytest ./tests
+        run: pytest ./tests -v --durations=0
 
 
       - name: Start Flet app
