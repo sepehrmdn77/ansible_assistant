@@ -1,14 +1,8 @@
 import pytest
 import flet as ft
 import sys
-import os
 
 sys.path.append('./src') 
-
-ssh_config_path = os.getenv('SSH_CONFIG_PATH', './src/mock_ssh/config')
-
-if not os.path.exists(ssh_config_path):
-    raise FileNotFoundError(f"No such file or directory: {ssh_config_path}")
 
 import main
 

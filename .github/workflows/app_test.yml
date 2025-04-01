@@ -28,8 +28,33 @@ jobs:
           pip install -r requirements.txt
           pip install flake8 pytest
 
+      - name: Create SSH Config File
+        run: |
+          mkdir -p ~/.ssh
+          echo "Host Host_x" > ~/.ssh/config
+          echo "  HostName x" >> ~/.ssh/config
+          echo "  User x_user" >> ~/.ssh/config
+          echo "  #Port qwert" >> ~/.ssh/config
+          echo "  UserKnownHostsFile /dev/null" >> ~/.ssh/config
+          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+          echo "  PasswordAuthentication no" >> ~/.ssh/config
+          echo "  IdentityFile ~/path/to/private_key" >> ~/.ssh/config
+          echo "  IdentitiesOnly yes" >> ~/.ssh/config
+          echo "  LogLevel FATAL" >> ~/.ssh/config
+          echo "  PubkeyAcceptedKeyTypes +ssh-rsa" >> ~/.ssh/config
+          echo "  HostKeyAlgorithms +ssh-rsa" >> ~/.ssh/config
+
+      - name: Verify File Content
+        run: |
+          cat ~/.ssh/config
+
+
       - name: Lint code
         run: flake8 ./src
+
+      - name: Run unit tests
+        run: pytest ./tests
+
 
       - name: Start Flet app
         run: python src/main.py

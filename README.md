@@ -55,6 +55,7 @@ This repository uses GitHub Actions for Continuous Integration (CI). Below are t
 - **Trigger**: Runs on every push or pull request to the `main` branch.
 - **Tasks**:
   - Lints the code using `flake8`.
+  - Runs the app in test environment.
 
 ### **How to Use**
 - Ensure that your changes are pushed to the `main` branch or open a pull request.
