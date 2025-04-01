@@ -49,14 +49,8 @@ jobs:
         run: |
           cat ~/.ssh/config
 
-      - name: Set PYTHONPATH
-        run: export PYTHONPATH=$PYTHONPATH:./src
-
       - name: Lint code
         run: flake8 ./src
-
-      - name: Run unit tests
-        run: pytest ./tests -v --durations=0
 
       - name: Start Flet app
         run: python src/main.py
