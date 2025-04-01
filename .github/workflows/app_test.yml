@@ -52,6 +52,3 @@ jobs:
       - name: Lint code
         run: flake8 ./src
 
-      - name: Start Flet app
-        run: python src/main.py
-
