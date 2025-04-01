@@ -46,6 +46,24 @@ python src/main.py  # Run the application
 - Modify `ssh_hosts.py` if needed to customize host management.
 - The application reads the host list dynamically.
 
+## 🚀 Continuous Integration and Workflows
+
+This repository uses GitHub Actions for Continuous Integration (CI). Below are the workflows implemented:
+
+### **CI Workflow**
+- **Path**: `.github/workflows/app_test.yml`
+- **Trigger**: Runs on every push or pull request to the `main` branch.
+- **Tasks**:
+  - Lints the code using `flake8`.
+
+### **How to Use**
+- Ensure that your changes are pushed to the `main` branch or open a pull request.
+- The workflows automatically run and provide feedback on code quality.
+
+### **Benefits**
+- Automates testing and linting to save development time.
+- Ensures code reliability by catching errors early in the process.
+
 ## 🤝 Contributing
 Contributions are welcome! Feel free to fork the repository and submit a pull request.
 
