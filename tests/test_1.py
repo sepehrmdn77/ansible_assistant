@@ -1,7 +1,7 @@
 import pytest
 import flet as ft
 import sys
-sys.path.append('../src') 
+sys.path.append('./src') 
 import main
 
 def test_app_initialization():

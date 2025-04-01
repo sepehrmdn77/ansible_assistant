@@ -32,4 +32,6 @@ jobs:
         run: flake8 ./src
 
       - name: Run unit tests
-        run: pytest ./tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:./src
+          pytest ./tests -v
