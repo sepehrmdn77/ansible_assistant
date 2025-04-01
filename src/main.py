@@ -1,4 +1,4 @@
-from flet import *
+import flet as ft
 import subprocess
 from time import sleep
 from ssh_hosts import hosts_dicts_list as hdl
@@ -19,14 +19,14 @@ orange = '#FC6736'
 # hosts_count = sum([1 for item in hdl])
 
 
-def main(page: Page):
-    page.horizontal_alignment = CrossAxisAlignment.CENTER
+def main(page: ft.Page):
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.bgcolor = '#232323'
     page.title = 'Ansible Assistant'
     page.window.width = 480
     page.window.height = 750
-    page.theme = Theme(
-        color_scheme_seed=Colors.BLUE,
+    page.theme = ft.Theme(
+        color_scheme_seed=ft.Colors.BLUE,
     )
 
     def hosts_boxes(list):  # in this function for each item in hdl we will have a check box
@@ -34,20 +34,20 @@ def main(page: Page):
         result = []
         for item in list:
             result.append(
-                dropdownm2.Option(
+                ft.dropdownm2.Option(
                     data=hdl[i],
                     text=hdl[i]['Host'],
                     on_click=button_clicked,
-                    alignment=alignment.center))
+                    alignment=ft.alignment.center))
             i += 1
         return result
 
-    Installing_status = Text()
+    Installing_status = ft.Text()
 
-    hostname = Text(value='')
-    username = Text(value='')
-    keypath = Text(value='')
-    portno = Text(value='')
+    hostname = ft.Text(value='')
+    username = ft.Text(value='')
+    keypath = ft.Text(value='')
+    portno = ft.Text(value='')
 
     def button_clicked(e):
         page.update()
@@ -66,21 +66,21 @@ def main(page: Page):
             else:
                 t += 1
 
-    error = TextField(
+    error = ft.TextField(
         '',
         color=bg_white,
         text_size=12,
         border_color='transparent',
         max_lines=100,
         read_only=True)
-    monitor = Column(controls=[error], scroll='auto')
-    monitor_container = Column(controls=[Container(
-        content=Container(
+    monitor = ft.Column(controls=[error], scroll='auto')
+    monitor_container = ft.Column(controls=[ft.Container(
+        content=ft.Container(
             content=monitor,
             margin=0,
             padding=5,
-            alignment=alignment.center,
-            gradient=RadialGradient(colors=[black, secondary_bg], radius=1.5),
+            alignment=ft.alignment.center,
+            gradient=ft.RadialGradient(colors=[black, secondary_bg], radius=1.5),
             height=250,
             width=450,
             border_radius=15
@@ -279,95 +279,95 @@ def main(page: Page):
                 Installing_status.value = ''
                 page.update()
 
-    respone = Text()
-    dd = DropdownM2(
+    respone = ft.Text()
+    dd = ft.DropdownM2(
         width=350,
         border_color='white12',
-        alignment=alignment.center,
+        alignment=ft.alignment.center,
         options=hosts_boxes(hdl)
     )
 
-    hosts_select = Column(
+    hosts_select = ft.Column(
         controls=[
             dd,
             respone
-        ], horizontal_alignment=CrossAxisAlignment.CENTER,
-        alignment=MainAxisAlignment.CENTER
+        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        alignment=ft.MainAxisAlignment.CENTER
     )
 
-    install_button = Container(
-        content=ElevatedButton(
+    install_button = ft.Container(
+        content=ft.ElevatedButton(
             text='Install',
             height=35, width=95,
-            icon=Icons.INSTALL_DESKTOP,
+            icon=ft.Icons.INSTALL_DESKTOP,
             icon_color='white',
             color='white',
             bgcolor='transparent',
             on_click=ans_ins),
         height=40, width=100,
-        gradient=LinearGradient(colors=[black, secondary_bg]),
+        gradient=ft.LinearGradient(colors=[black, secondary_bg]),
         border_radius=20
     )
 
-    test_btn = ElevatedButton(
+    test_btn = ft.ElevatedButton(
         text='test', on_click=lambda _: print([hostname, username, keypath]))
 
-    main_screen = Container(
-        content=Column(
+    main_screen = ft.Container(
+        content=ft.Column(
             height=900,
             width=1000,
             controls=[
-                Container(
-                    content=Row(
+                ft.Container(
+                    content=ft.Row(
                         controls=[
-                            Icon(
-                                Icons.SETTINGS,
+                            ft.Icon(
+                                ft.Icons.SETTINGS,
                                 color=light_orange,
                             ),
-                            Text(
+                            ft.Text(
                                 value="Welcome to ansible assistant",
                                 size=20,
                                 color=bg_white,
-                                weight=FontWeight.W_900,
+                                weight=ft.FontWeight.W_900,
                             )
                         ], alignment='center'
                     ),
-                    padding=padding.all(15),
-                    alignment=alignment.center
+                    padding=ft.padding.all(15),
+                    alignment=ft.alignment.center
                 ),
-                Container(
+                ft.Container(
                     content=hosts_select,
                     border_radius=15,
-                    gradient=LinearGradient(
+                    gradient=ft.LinearGradient(
                         colors=[black, secondary_bg]
                     ),
                     height=200,
                     width=450,
-                    alignment=alignment.center
+                    alignment=ft.alignment.center
                 ),
-                Row(
+                ft.Row(
                     controls=[
-                        Checkbox(
+                        ft.Checkbox(
                             label="Docker",
                             height=35, width=75,
                             fill_color='white12',
                             hover_color='#55216df2',
                             check_color='#216df2'
-                        ), Checkbox(
+                        ), ft.Checkbox(
                             label="PostgreSQL",
                             height=35, width=105,
                             fill_color='white12',
                             hover_color='#55008bb9',
                             active_color=light_orange,
                             check_color='#008bb9'
-                        ), Checkbox(
+                        ), ft.Checkbox(
                             label="Node",
                             height=35, width=60,
                             fill_color='white12',
                             hover_color='#5531b263',
                             active_color=light_orange,
                             check_color='#31b263'
-                        ), Checkbox(
+                        ), ft.Checkbox(
                             label="Mongodb",
                             height=35, width=55,
                             fill_color='white12',
@@ -376,18 +376,18 @@ def main(page: Page):
                             check_color='#119f1f'
                         )
                     ],
-                    alignment=MainAxisAlignment.CENTER
+                    alignment=ft.MainAxisAlignment.CENTER
                 ),
                 install_button,
                 monitor_container,
-                Container(height=40),
+                ft.Container(height=40),
                 Installing_status
-            ], horizontal_alignment=CrossAxisAlignment.CENTER
-        ), alignment=alignment.center
+            ], horizontal_alignment=ft.CrossAxisAlignment.CENTER
+        ), alignment=ft.alignment.center
     )
 
     page.update()
     page.add(main_screen)
 
 
-app(target=main, assets_dir="assets")
+ft.app(target=main, assets_dir="assets")
