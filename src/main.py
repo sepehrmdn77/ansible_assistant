@@ -80,7 +80,8 @@ def main(page: ft.Page):
             margin=0,
             padding=5,
             alignment=ft.alignment.center,
-            gradient=ft.RadialGradient(colors=[black, secondary_bg], radius=1.5),
+            gradient=ft.RadialGradient(
+                colors=[black, secondary_bg], radius=1.5),
             height=250,
             width=450,
             border_radius=15
@@ -308,9 +309,6 @@ def main(page: ft.Page):
         gradient=ft.LinearGradient(colors=[black, secondary_bg]),
         border_radius=20
     )
-
-    test_btn = ft.ElevatedButton(
-        text='test', on_click=lambda _: print([hostname, username, keypath]))
 
     main_screen = ft.Container(
         content=ft.Column(
