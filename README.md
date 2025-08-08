@@ -1,79 +1,107 @@
-# Ansible Assistant
+# 🚀 Ansible Assistant
 
-![Ansible Assistant](https://img.shields.io/badge/Python-Flet-blue?style=for-the-badge&logo=python)
+**Ansible Assistant** is a powerful and intuitive GUI tool built in Python using [Flet](https://flet.dev/) to simplify and streamline Ansible operations across remote hosts.
 
-## 📌 Overview
-**Ansible Assistant** is a Python-based **GUI tool** built with the **Flet framework** to simplify Ansible operations on remote hosts. It provides a user-friendly interface to install essential software packages on multiple servers effortlessly.
+---
 
-## ⚡ Features
-- 📌 **Remote Host Selection**: Dynamically fetch and display hosts from SSH config.
-- 🖥️ **Install Essential Packages**: Easily install Docker, PostgreSQL, Node.js, and MongoDB using Ansible.
-- 🔄 **Automated Installations**: Executes Ansible commands for software installation.
-- 🖱️ **Interactive UI**: Built using **Flet**, providing a smooth experience.
-- 🔑 **SSH Key Support**: Uses private keys for authentication.
-- 🌙 **Dark Mode UI**: Aesthetic design with themed colors.
+## ✨ Features
+
+- 🖥️ **Remote Host Detection**  
+  Automatically fetches hosts from your SSH config (`~/.ssh/config`) for quick access.
+
+- ⚙️ **One-click Software Installation**  
+  Install popular tools like **Docker**, **PostgreSQL**, **MongoDB**, and **Node.js** with a single click using Ansible.
+
+- 🔐 **SSH Key Authentication**  
+  Secure access to your remote servers using your private key.
+
+- 🌙 **Dark Mode UI**  
+  Built with Flet — providing a sleek, responsive and modern interface.
+
+---
 
 ## 📸 Screenshot
+
 ![App test](src/assets/App_test.png)
 
-## 🚀 Installation
-Clone this repository and navigate to the project directory:
+---
+
+## 🛠️ Installation
+
+### 🔹 Clone the Repo
 
 ```bash
-# Clone the repository
 git clone https://github.com/sepehrmdn77/ansible_assistant.git
 cd ansible_assistant
 ```
 
-## ▶️ Usage
-Ensure you have Python installed, then install dependencies and run the application:
+### 🔹 Using Python
 
 ```bash
-pip install -r requirements.txt  # Install required libraries
-python src/main.py  # Run the application
+pip install -r requirements.txt
+python src/main.py
 ```
 
-Or simply deploy with dockerfile using commands below:
+### 🔹 Using Docker Compose
+
 ```bash
 docker build -t ansible_assistant:latest .
-docker compose pull
 docker compose up -d
 ```
 
-## ⚙️ Requirements
-- Ubuntu/Linux system
-- Python (3.8+ recommended)
-- **Flet** framework (`pip install flet`)
-- **Ansible** (`pip install ansible` or install via package manager)
-- SSH Configuration with remote host details
-- Sudo privileges for installations
+---
 
-## 🛠️ Configuration
-- Ensure your SSH configuration (`~/.ssh/config`) contains the necessary hosts.
-- Modify `ssh_hosts.py` if needed to customize host management.
-- The application reads the host list dynamically.
+## ✅ Requirements
 
-## 🚀 Continuous Integration and Workflows
+- Python 3.8+
+- Ansible
+- Flet
+- SSH-configured remote hosts
+- Linux-based environment (recommended)
 
-This repository uses GitHub Actions for Continuous Integration (CI). Below are the workflows implemented:
+---
 
-### **CI Workflow**
-- **Path**: `.github/workflows/app_test.yml`
-- **Trigger**: Runs on every push or pull request to the `main` branch.
-- **Tasks**:
-  - Lints the code using `flake8`.
-  - Runs the app in test environment.
+## ⚙️ Configuration
 
-### **How to Use**
-- Ensure that your changes are pushed to the `main` branch or open a pull request.
-- The workflows automatically run and provide feedback on code quality.
+- Your `~/.ssh/config` file must be populated with remote host entries.
+- The app reads the hostnames directly from this file and displays them in the GUI.
 
-### **Benefits**
-- Automates testing and linting to save development time.
-- Ensures code reliability by catching errors early in the process.
+---
+
+## 🧪 CI/CD Pipeline
+
+This project includes a GitHub Actions workflow:
+
+- ✅ Linting with **Flake8**
+- 🚀 Auto-test on push and pull requests
+- 🔐 Ensures code quality and stability
+
+---
+
+## 💡 Use Cases
+
+- 🧑‍💻 DevOps engineers managing multiple servers
+- 🛠️ System admins deploying essential services
+- 👨‍🏫 Instructors teaching automation and Ansible basics
+
+---
 
 ## 🤝 Contributing
-Contributions are welcome! Feel free to fork the repository and submit a pull request.
+
+We welcome contributions!
+
+1. Fork the repo
+2. Create a branch: `git checkout -b new-feature`
+3. Make your changes
+4. Submit a pull request ✅
+
+---
 
 ## 📬 Contact
-For issues or feature requests, please open an issue in the repository or reach out at [sepehrmaadani98@gmail.com].
+
+📧 sepehrmaadani98@gmail.com  
+🔗 [GitHub Profile](https://github.com/sepehrmdn77)
+
+---
+
+> Designed with ❤️ by [Sepehr Maadani](https://github.com/sepehrmdn77)
