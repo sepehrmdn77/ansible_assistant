@@ -29,8 +29,15 @@ cd ansible_assistant
 Ensure you have Python installed, then install dependencies and run the application:
 
 ```bash
-pip install flet ansible  # Install required libraries
+pip install -r requirements.txt  # Install required libraries
 python src/main.py  # Run the application
+```
+
+Or simply deploy with dockerfile using commands below:
+```bash
+docker build -t ansible_assistant:latest .
+docker compose pull
+docker compose up -d
 ```
 
 ## ⚙️ Requirements
