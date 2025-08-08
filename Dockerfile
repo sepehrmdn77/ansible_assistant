@@ -9,4 +9,4 @@ EXPOSE 80
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
-CMD ["flet", "run", "--web", "--port", "80", "app.py"]
+CMD ["flet", "run", "--web", "--port", "80", "./src/main.py"]
