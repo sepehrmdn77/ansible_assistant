@@ -1,0 +1,6 @@
+services:
+  ansible_assistant:
+    image: ansible_assistant:latest
+    container_name: ansible_assistant
+    ports:
+      - 80:80
